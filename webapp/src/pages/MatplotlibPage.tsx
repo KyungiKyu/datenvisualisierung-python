@@ -1,0 +1,41 @@
+
+import { PlotViewer } from '../components/PlotViewer';
+import { CodeBlock } from '../components/CodeBlock';
+import { BusinessContext } from '../components/BusinessContext';
+
+export const MatplotlibPage = () => {
+  return (
+    <div className="space-y-8 animate-fade-in pb-12">
+      <div className="border-b border-gray-200 pb-6">
+        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-2">Matplotlib</h1>
+        <p className="text-xl text-gray-500 max-w-3xl">Das Schweizer Taschenmesser der Python-Visualisierung. Ideal für präzise Kontrolle über jeden Aspekt eines statischen Graphen.</p>
+      </div>
+
+      <BusinessContext
+        title="Warum Matplotlib für Basis-Metriken?"
+        narrative="Matplotlib ist der Industriestandard. Wir nutzen es für statische Berichte (PDFs/E-Mails), bei denen Interaktivität nicht möglich ist. Die Kontrolle über Layout und Styling garantiert CI/CD konforme Reports."
+        decisionImpact="Die Heatmap deckt auf, dass Marketingausgaben stark mit Neuanmeldungen korrelieren, jedoch die Bounce-Rate unabhängig davon bleibt. Strategie: Fokus auf zielgerichtetere Werbung, um Bounce-Rate zu senken."
+      />
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="space-y-4">
+          <PlotViewer title="Correlation Matrix of Daily Metrics" source="/plots/mpl_heatmap.png" type="image" height="450px" />
+          <CodeBlock filename="heatmap.py" code={`import matplotlib.pyplot as plt\nimport pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv')\nnumeric_data = data[['Daily_Users', 'New_Signups', 'Marketing_Spend', 'Revenue', 'Bounce_Rate', 'Conversion_Rate']]\ncorr = numeric_data.corr()\n\nplt.figure(figsize=(8, 6))\nplt.imshow(corr, cmap='coolwarm', interpolation='none', aspect='auto')\nplt.colorbar()\nplt.xticks(range(len(corr)), corr.columns, rotation=45, ha='right')\nplt.yticks(range(len(corr)), corr.columns)\nplt.title('Correlation Matrix of Daily Metrics')\nplt.tight_layout()\nplt.savefig('mpl_heatmap.png')`} />
+        </div>
+
+        <div className="space-y-4">
+          <PlotViewer title="Lifetime Value (LTV) by Segment" source="/plots/mpl_box.png" type="image" height="450px" />
+          <CodeBlock filename="boxplot.py" code={`import matplotlib.pyplot as plt\nimport pandas as pd\n\nuser_data = pd.read_csv('user_data.csv')\nplt.figure(figsize=(8, 6))\nuser_data.boxplot(column='LTV', by='Segment', grid=False, figsize=(8,6))\nplt.title('Lifetime Value (LTV) by Segment')\nplt.suptitle('') # Remove auto suptitle\nplt.ylabel('LTV ($)')\nplt.tight_layout()\nplt.savefig('mpl_box.png')`} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <PlotViewer title="Daily Active Users" source="/plots/mpl_line.png" type="image" height="300px" />
+        <PlotViewer title="Average Daily Signups" source="/plots/mpl_bar.png" type="image" height="300px" />
+        <PlotViewer title="Customer Segments" source="/plots/mpl_pie.png" type="image" height="300px" />
+        <PlotViewer title="Marketing Spend vs Revenue" source="/plots/mpl_scatter.png" type="image" height="300px" />
+        <PlotViewer title="Satisfaction Score Distribution" source="/plots/mpl_hist.png" type="image" height="300px" />
+      </div>
+    </div>
+  );
+};

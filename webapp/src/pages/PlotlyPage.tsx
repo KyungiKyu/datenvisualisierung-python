@@ -20,17 +20,18 @@ export const PlotlyPage = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="space-y-4">
           <PlotViewer title="3D View: Users, Spend, and Revenue" source="/plots/plotly_3d.html" type="html" height="500px" />
-          <CodeBlock filename="plotly_3d.py" code={`import plotly.express as px\nimport pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv')\n\nfig_3d = px.scatter_3d(\n    data, x='Daily_Users', y='Marketing_Spend', z='Revenue',\n    color='Conversion_Rate', size='New_Signups', opacity=0.7,\n    title='3D View: Users, Spend, and Revenue'\n)\n\nfig_3d.write_html('plotly_3d.html')`} />
+          <CodeBlock filename="plotly_3d.py" code={`import plotly.express as px\nimport pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv')\n\n# Erstelle einen interaktiven 3D-Scatterplot\nfig_3d = px.scatter_3d(\n    data, x='Daily_Users', y='Marketing_Spend', z='Revenue',\n    color='Conversion_Rate', size='New_Signups', opacity=0.7,\n    title='3D View: Users, Spend, and Revenue'\n)\n\nfig_3d.write_html('plotly_3d.html')`} />
         </div>
 
         <div className="space-y-4">
           <PlotViewer title="Revenue vs Users over Time (Animation)" source="/plots/plotly_anim.html" type="html" height="500px" />
-          <CodeBlock filename="plotly_animation.py" code={`import plotly.express as px\nimport pandas as pd\n\n# Assuming anim_data is pre-processed\nfig_anim = px.scatter(\n    anim_data, x="Daily_Users", y="Revenue", \n    animation_frame="Month", animation_group="Type",\n    size="Marketing_Spend", color="Type", hover_name="Type",\n    log_x=False, size_max=55, range_x=[0, 10000], range_y=[0, 30000],\n    title='Revenue vs Users over Time'\n)\n\nfig_anim.write_html('plotly_anim.html')`} />
+          <CodeBlock filename="plotly_animation.py" code={`import plotly.express as px\nimport pandas as pd\n\n# Angenommen anim_data ist vorverarbeitet\n# Erstelle ein animiertes Streudiagramm über die Zeit (Monate)\nfig_anim = px.scatter(\n    anim_data, x="Daily_Users", y="Revenue", \n    animation_frame="Month", animation_group="Type",\n    size="Marketing_Spend", color="Type", hover_name="Type",\n    log_x=False, size_max=55, range_x=[0, 10000], range_y=[0, 30000],\n    title='Revenue vs Users over Time'\n)\n\nfig_anim.write_html('plotly_anim.html')`} />
         </div>
       </div>
 
       <div className="mt-8 space-y-4">
         <PlotViewer title="Executive Dashboard Overview" source="/plots/plotly_dashboard.html" type="html" height="600px" />
+        <CodeBlock filename="plotly_dashboard.py" code={`import plotly.graph_objects as go\nfrom plotly.subplots import make_subplots\nimport pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv')\nuser_data = pd.read_csv('user_data.csv')\n\n# Erstelle ein Dashboard mit 4 Subplots\nfig_dash = make_subplots(\n    rows=2, cols=2, \n    subplot_titles=("Revenue Trend", "Signups vs Spend", \n                    "Bounce Rate Dist", "Segment Value")\n)\n\n# Füge einzelne Traces (Graphen) zu den jeweiligen Positionen hinzu\nfig_dash.add_trace(go.Scatter(x=data['Date'], y=data['Revenue'], \n                              name="Revenue"), row=1, col=1)\nfig_dash.add_trace(go.Scatter(x=data['Marketing_Spend'], \n                              y=data['New_Signups'], mode='markers', \n                              name="Signups/Spend"), row=1, col=2)\nfig_dash.add_trace(go.Histogram(x=data['Bounce_Rate'], \n                                name="Bounce Rate"), row=2, col=1)\n\nsegment_ltv = user_data.groupby('Segment')['LTV'].mean()\nfig_dash.add_trace(go.Bar(x=segment_ltv.index, y=segment_ltv.values, \n                          name="Avg LTV"), row=2, col=2)\n\nfig_dash.update_layout(title_text="Executive Dashboard Overview", height=600)\nfig_dash.write_html('plotly_dashboard.html')`} />
       </div>
     </div>
   );

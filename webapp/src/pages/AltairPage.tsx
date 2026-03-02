@@ -19,7 +19,7 @@ export const AltairPage = () => {
 
       <div className="space-y-4">
         <PlotViewer title="Declarative Scatter Plot (Marketing Spend, Revenue, Bounce Rate)" source="/plots/altair_declarative.html" type="html" height="500px" />
-        <CodeBlock filename="altair_plot.py" code={`import altair as alt\nimport pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv').sample(200)\n\nalt_chart = alt.Chart(data).mark_circle(size=60).encode(\n    x=alt.X('Marketing_Spend', title='Marketing Spend'),\n    y=alt.Y('Revenue', title='Revenue'),\n    color=alt.Color('Bounce_Rate', scale=alt.Scale(scheme='viridis')),\n    tooltip=['Date', 'Marketing_Spend', 'Revenue', 'Bounce_Rate']\n).properties(\n    title='Declarative Scatter Plot: Spend vs Revenue',\n    width=600,\n    height=400\n).interactive()\n\nalt_chart.save('altair_declarative.html')`} />
+        <CodeBlock filename="altair_plot.py" code={`import altair as alt\nimport pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv').sample(200)\n\n# Deklarativer Aufbau der Visualisierung (Chart -> Markierung -> Encoding)\nalt_chart = alt.Chart(data).mark_circle(size=60).encode(\n    # Mappe Datenfelder auf visuelle Kanäle\n    x=alt.X('Marketing_Spend', title='Marketing Spend'),\n    y=alt.Y('Revenue', title='Revenue'),\n    color=alt.Color('Bounce_Rate', scale=alt.Scale(scheme='viridis')),\n    tooltip=['Date', 'Marketing_Spend', 'Revenue', 'Bounce_Rate']\n).properties(\n    title='Declarative Scatter Plot: Spend vs Revenue',\n    width=600,\n    height=400\n).interactive() # Mache das Chart interaktiv (Zoom/Pan)\n\nalt_chart.save('altair_declarative.html')`} />
       </div>
     </div>
   );

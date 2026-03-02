@@ -20,12 +20,12 @@ export const PandasPage = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="space-y-4">
           <PlotViewer title="DataFrame Description (Summary Statistics)" source="/plots/pandas_describe.html" type="html" height="400px" />
-          <CodeBlock filename="describe.py" code={`import pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv')\n\n# Generate HTML string with Tailwind classes\ndesc_html = data.describe().to_html(\n    classes='min-w-full divide-y divide-gray-200', \n    border=0\n)\n\nwith open('pandas_describe.html', 'w') as f:\n    f.write(desc_html)`} />
+          <CodeBlock filename="describe.py" code={`import pandas as pd\n\ndata = pd.read_csv('daily_metrics.csv')\n\n# Generiere HTML-Tabelle mit Zusammenfassungsstatistiken\n# und füge Tailwind CSS-Klassen für das Styling hinzu\ndesc_html = data.describe().to_html(\n    classes='min-w-full divide-y divide-gray-200', \n    border=0\n)\n\n# Speichere die HTML-Tabelle in einer Datei\nwith open('pandas_describe.html', 'w') as f:\n    f.write(desc_html)`} />
         </div>
 
         <div className="space-y-4">
           <PlotViewer title="Average LTV Pivot Table (Segment vs Device)" source="/plots/pandas_pivot.html" type="html" height="400px" />
-          <CodeBlock filename="pivot.py" code={`import pandas as pd\n\nuser_data = pd.read_csv('user_data.csv')\n\npivot = pd.pivot_table(\n    user_data, values='LTV', \n    index='Segment', columns='Device', \n    aggfunc='mean'\n).round(2)\n\npivot_html = pivot.to_html(\n    classes='min-w-full divide-y divide-gray-200', \n    border=0\n)\n\nwith open('pandas_pivot.html', 'w') as f:\n    f.write(pivot_html)`} />
+          <CodeBlock filename="pivot.py" code={`import pandas as pd\n\nuser_data = pd.read_csv('user_data.csv')\n\n# Erstelle eine Pivot-Tabelle, die den durchschnittlichen \n# LTV (Lifetime Value) pro Segment und Gerät zeigt\npivot = pd.pivot_table(\n    user_data, values='LTV', \n    index='Segment', columns='Device', \n    aggfunc='mean'\n).round(2)\n\n# Konvertiere in HTML-Tabelle mit Styling\npivot_html = pivot.to_html(\n    classes='min-w-full divide-y divide-gray-200', \n    border=0\n)\n\nwith open('pandas_pivot.html', 'w') as f:\n    f.write(pivot_html)`} />
         </div>
       </div>
     </div>
